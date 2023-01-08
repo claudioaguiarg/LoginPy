@@ -12,54 +12,73 @@ customtkinter.set_default_color_theme('blue')
 
 class SistemaLogin():
     def __init__(self) -> None:
-       #Create a Ctk instance(app)
+        self.list_destroy = []
+        #Create a Ctk instance(app)
         self.main = customtkinter.CTk()
         self.main.geometry("400x240")
         self.main.resizable(width=False, height=False)
 
+        self.default()
+
+
+        self.main.mainloop()
+
+    def default(self):
+        self.destroy_items()
         #Username Frame
-        username_tittle = customtkinter.CTkLabel(master=self.main, text='Username:').place(relx=0.2, rely= 0.3)
+        self.username_tittle = customtkinter.CTkLabel(master=self.main, text='Username:')
+        self.username_tittle.place(relx=0.2, rely= 0.3)
         self.username_box = customtkinter.CTkEntry(master=self.main, width=150)
         self.username_box.place(relx=0.43, rely=0.3)
-        python_image = ImageTk.PhotoImage(Image.open('logo.png') )
-        but = customtkinter.CTkLabel(master=self.main, image=python_image, text='', width=50, height=50).place(relx=0.4, rely = 0.05)
+        python_image = customtkinter.CTkImage(Image.open('logo.png'),size=(80,50))
+        self.but = customtkinter.CTkLabel(master=self.main, image=python_image, text='', width=50, height=50)
+        self.but.place(relx=0.4, rely = 0.05)
 
         #Password Frame
-        password_tittle = customtkinter.CTkLabel(self.main, text='Password:').place(relx=0.2, rely= 0.45)
+        self.password_tittle = customtkinter.CTkLabel(self.main, text='Password:')
+        self.password_tittle.place(relx=0.2, rely= 0.45)
         self.password_box = customtkinter.CTkEntry(self.main,width=150, show='*')
         self.password_box.place(relx=0.43, rely=0.45)
 
         #Enter and SigUp Buttons
-        enter_buttom = customtkinter.CTkButton(self.main, text='Enter', width=100, command=self.loginAuthorization)
-        enter_buttom.place(relx=0.33, rely=0.8, anchor=CENTER)
+        self.enter_buttom = customtkinter.CTkButton(self.main, text='Enter', width=100, command=self.loginAuthorization)
+        self.enter_buttom.place(relx=0.33, rely=0.8, anchor=CENTER)
 
-        signup_buttom = customtkinter.CTkButton(self.main, text='Register', width=100, command=self.register)
-        signup_buttom.place(relx=0.67, rely=0.8, anchor=CENTER)
-
-
-        self.main.mainloop()
-
+        self.signup_buttom = customtkinter.CTkButton(self.main, text='Register', width=100, command=self.register)
+        self.signup_buttom.place(relx=0.67, rely=0.8, anchor=CENTER)
+        self.list_destroy = [self.username_tittle,
+                             self.username_box,
+                             self.but,
+                             self.password_tittle,
+                             self.password_box,
+                             self.enter_buttom,
+                             self.signup_buttom]
     def register(self):
-        self.main.destroy()
-        self.main = customtkinter.CTk()
-        self.main.geometry("400x240")
-        self.main.resizable(width=False, height=False)
-
+        self.destroy_items()
         #Username box register
-        username_tittle = customtkinter.CTkLabel(master=self.main, text='Username:').place(relx=0.2, rely= 0.3)
+        self.username_tittle = customtkinter.CTkLabel(master=self.main, text='Username:').place(relx=0.2, rely= 0.3)
         self.username_box_register = customtkinter.CTkEntry(master=self.main,width=150)
         self.username_box_register.place(relx=0.43, rely=0.3)
         
         #Password box reister
-        password_tittle = customtkinter.CTkLabel(self.main, text='Password:').place(relx=0.2, rely= 0.45)
+        self.password_tittle = customtkinter.CTkLabel(self.main, text='Password:').place(relx=0.2, rely= 0.45)
         self.password_register_box = customtkinter.CTkEntry(self.main,width=150, show='*')
         self.password_register_box.place(relx=0.43, rely=0.45)
 
         #Register buttom
-        self.signup_buttom = customtkinter.CTkButton(self.main, text='Register', width=100, command=self.register_db)
-        self.signup_buttom.place(relx=0.5, rely=0.8, anchor=CENTER)
+        self.return_buttom = customtkinter.CTkButton(self.main, text='Return', width=100, command=self.default)
+        self.return_buttom.place(relx=0.33, rely=0.8, anchor=CENTER)
 
-        self.main.mainloop()
+        self.signup_buttom = customtkinter.CTkButton(self.main, text='Register', width=100, command=self.register_db)
+        self.signup_buttom.place(relx=0.67, rely=0.8, anchor=CENTER)
+
+        self.list_destroy = [self.username_tittle,
+                             self.username_box_register,
+                             self.password_tittle,
+                             self.password_register_box,
+                             self.return_buttom,
+                             self.signup_buttom]
+        
 
     def register_db(self):
         username = self.username_box_register.get()
@@ -72,7 +91,7 @@ class SistemaLogin():
             con.commit()
             print('Sucess')
         except:
-            print('Fail')
+            print('ERROR [DATABASE REGISTER]')
         
         
 
@@ -102,7 +121,12 @@ class SistemaLogin():
             print('Database error')
         #senão mostra mensagem de erro
     
-
+    def destroy_items(self):
+        try:
+            for item in self.list_destroy:
+                item.destroy()
+        except:
+            print('Error [Destroy Items]')
 #Create a Ctk instance(app)
 main = SistemaLogin()
 main()
