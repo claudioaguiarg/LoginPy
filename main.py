@@ -106,7 +106,7 @@ class SistemaLogin():
                                     ('{username}','{password}')
                                     """)
                         con.commit()
-                        print('Sucess')
+                        self.feedback_message('Successful registration')
                     except:
                         self.feedback_message('ERROR [DATABASE REGISTER]')
             except:
@@ -136,7 +136,7 @@ class SistemaLogin():
             else:
                 try:
                     if password == res[0][1]:
-                        self.feedback_message('Sucess')
+                        self.feedback_message('Successful Login')
                     else:
                         self.feedback_message('Wrong username or password')
                 except:
@@ -159,5 +159,5 @@ class SistemaLogin():
         self.feedback.configure(text='')
 
 #Create a Ctk instance(app)
-main = SistemaLogin()
-main()
+login = SistemaLogin()
+login
